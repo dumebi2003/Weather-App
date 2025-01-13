@@ -21,6 +21,7 @@ function refreshWeather(response) {
 }
 
 function formatDate(date) {
+  // date formatter
   let minutes = date.getMinutes();
   let hours = date.getHours();
   let days = [
@@ -35,15 +36,16 @@ function formatDate(date) {
   let day = days[date.getDay()];
 
   if (minutes < 10) {
+    // adding a 0 in front of minutes that are less than 10
     minutes = `0${minutes}`;
   }
 
   return `${day} ${hours}:${minutes}`;
 }
 
-function searchCity(city) {
+function searchCity(cityLocation) {
   let apiKey = "f57ef78a2fbo86933cf84320ct6badc8";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${cityLocation}&key=${apiKey}&units=metric`; //api url
   axios.get(apiUrl).then(refreshWeather);
 }
 
@@ -55,6 +57,7 @@ function handleSearchSubmit(event) {
 }
 
 function formatDay(timestamp) {
+  // data format for the forecast
   let date = new Date(timestamp * 1000);
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -63,7 +66,7 @@ function formatDay(timestamp) {
 
 function getForecast(city) {
   let apiKey = "f57ef78a2fbo86933cf84320ct6badc8";
-  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`; //forecast api
   axios(apiUrl).then(displayForecast);
 }
 
@@ -72,6 +75,7 @@ function displayForecast(response) {
 
   response.data.daily.forEach(function (day, index) {
     if (index < 5) {
+      // showing only five days in the forecast
       forecastHtml =
         forecastHtml +
         `
@@ -99,4 +103,6 @@ function displayForecast(response) {
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
 
-searchCity("Paris");
+let cityLocation = prompt("What city are in you in?"); // getting the user's city location
+
+searchCity(cityLocation);
